@@ -1,6 +1,10 @@
 // All the todos should be shown
 //const taskUI = document.querySelector("#tasks");
 
+
+
+const taskEl$ = $("#tasks");
+
 // click, mousemove, mousedown, mouseup, keyup,keydown...
 $("#btnAdd").on("click", (e) => {
   // let task = document.querySelector("#inputTask").value
@@ -22,31 +26,44 @@ $("#btnAdd").on("click", (e) => {
   
   TodoData = [todo, ...TodoData]
 
-  taskUI();
+  // Renders full items
+  //tasksUI();
+
+  let newTask = taskItemUI(todo);
+
+  // append adds to end
+  //taskEl$.append(newTask);  
+
+  // prepend
+  taskEl$.prepend(newTask);  
 
 });
 
-var taskUI =  function () {
-  const taskUI$ = $("#tasks");
+var tasksUI =  function () {
 
   let html = TodoData.map(t => {
-    return (
-      `
-        <div class="card mt-3" >
-          <div class="card-body">
-            <h5 class="card-title">${t.title}</h5>
-            <span>
-              ${t.completed ? "completed": "in-progress" }
-            </span>
-          </div>
-        </div>
-      `
-    )
+    return taskItemUI(t);
   });
 
-  taskUI$.html(html.join(""));
+  taskEl$.html(html.join(""));
 }
 
-taskUI();
+var taskItemUI = function (task) {
+  return (
+    `
+      <div class="card mt-3" >
+        <div class="card-body">
+          <h5 class="card-title">${task.title}</h5>
+          <span>
+            ${task.completed ? "completed": "in-progress" }
+          </span>
+        </div>
+      </div>
+    `
+  )
+}
+
+
+tasksUI();
 
 
