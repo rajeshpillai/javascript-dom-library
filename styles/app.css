@@ -1,0 +1,4 @@
+.todo-title {
+  cursor: pointer;
+  user-select: none;
+}

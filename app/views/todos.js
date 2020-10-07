@@ -16,31 +16,16 @@ $("#btnAdd").on("click", (e) => {
     completed: false
   }
   
-
-  // Old way
-  // TodoData.push({
-  //   id: +new Date(),
-  //   title: task,
-  //   completed: false
-  // });
-  
   TodoData = [todo, ...TodoData]
 
-  // Renders full items
-  //tasksUI();
-
   let newTask = taskItemUI(todo);
-
-  // append adds to end
-  //taskEl$.append(newTask);  
-
-  // prepend
   taskEl$.prepend(newTask);  
 
 });
 
 
-//BEST PRACTICE:  Optimized way to attach events to a list of elements
+// BEST PRACTICE:  Optimized way to attach events to a list of elements
+// Delete Todo
 $("#tasks").on("click", ".ui-delete", (e) => {
   
   //alert(e.target.parentNode.parentNode.getAttribute("data-task-id"));
@@ -57,6 +42,41 @@ $("#tasks").on("click", ".ui-delete", (e) => {
     }); 
   }
 });
+
+// Feature: Toggle todo state from complete to in-progress and vice-versa
+$("#tasks").on("dblclick", "h5", (e) => {
+  //alert(e.target.tagName);
+  let taskId = $(e.target)
+        .closest(".card")
+        .attr("id");
+
+
+  // Get current ui element
+  let currentTaskItem$ = $(`#${taskId}`);
+
+
+  // Get the todo id
+  taskId = taskId.split("-")[1];
+
+  // current editoed todo object
+  let currentEditedTodo = undefined;
+
+  TodoData = TodoData.map(t => {
+    if (t.id == taskId) {
+      currentEditedTodo = t;
+      t.completed = !t.completed;
+    }
+    return t;
+  });
+
+  // Build the new UI
+  let updatedUI = taskItemUI(currentEditedTodo);
+
+  // Replace old task item Ui WITH THE new UI.
+  currentTaskItem$.replaceWith(updatedUI);
+
+});
+
 
 
 // Render full task 
@@ -80,7 +100,7 @@ var taskItemUI = function (task) {
       <div class="card mt-3" id=task-${task.id} >
         <div class="card-body">
           <div class="d-flex justify-content-between">
-            <h5 class="card-title">${task.title}</h5>
+            <h5 class="card-title todo-title">${task.title}</h5>
             <button data-task-id =${task.id} class="btn btn-outline ui-delete">
               <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
