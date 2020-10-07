@@ -5,6 +5,26 @@
 
 const taskEl$ = $("#tasks");
 
+// Search todos
+$("#search-form").on("submit", (e) => {
+  e.preventDefault();
+  let q = $("#search-todo").val();
+
+  filterTodos(q);
+});
+
+
+function filterTodos(q) {
+  let filteredTodos = TodoData.filter(t => {
+    if (t.title.toLowerCase().indexOf(q.toLowerCase()) >= 0) {
+      return t;
+    }
+  });
+
+  tasksUI(filteredTodos);
+}
+
+
 // click, mousemove, mousedown, mouseup, keyup,keydown...
 $("#btnAdd").on("click", (e) => {
   // let task = document.querySelector("#inputTask").value
@@ -80,9 +100,9 @@ $("#tasks").on("dblclick", "h5", (e) => {
 
 
 // Render full task 
-var tasksUI =  function () {
+var tasksUI =  function (todoData) {
 
-  let html = TodoData.map(t => {
+  let html = todoData.map(t => {
     return taskItemUI(t);
   });
 
@@ -117,6 +137,6 @@ var taskItemUI = function (task) {
   )
 }
 
-tasksUI();
+tasksUI(TodoData);
 
 
