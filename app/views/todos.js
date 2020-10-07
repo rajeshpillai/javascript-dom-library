@@ -39,6 +39,8 @@ $("#btnAdd").on("click", (e) => {
 
 });
 
+
+// Render full task 
 var tasksUI =  function () {
 
   let html = TodoData.map(t => {
@@ -48,13 +50,18 @@ var tasksUI =  function () {
   taskEl$.html(html.join(""));
 }
 
+// Render one task item
 var taskItemUI = function (task) {
+
+  let statusClass = task.completed ? "badge badge-success"
+                    : "badge badge-warning";
+
   return (
     `
       <div class="card mt-3" >
         <div class="card-body">
           <h5 class="card-title">${task.title}</h5>
-          <span>
+          <span class="badge ${statusClass}">
             ${task.completed ? "completed": "in-progress" }
           </span>
         </div>
@@ -62,7 +69,6 @@ var taskItemUI = function (task) {
     `
   )
 }
-
 
 tasksUI();
 
